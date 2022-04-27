@@ -22,7 +22,7 @@ import lombok.ToString;
 
 @Getter
 @ToString
-public class MTDConfig {
+public class MailCordConfig {
     @JsonProperty("authorization")
     private AuthorizationConfig authorization;
     

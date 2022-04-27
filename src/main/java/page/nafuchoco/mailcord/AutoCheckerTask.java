@@ -25,13 +25,13 @@ import java.util.Arrays;
 import java.util.Properties;
 import java.util.TimerTask;
 
-public class AutoCheckThread extends TimerTask {
+public class AutoCheckerTask extends TimerTask {
 
     private final NeoModuleLogger log;
     private final Properties imapProperties;
     private final TextChannel receiveChannel;
 
-    public AutoCheckThread(Properties imapProperties, TextChannel receiveChannel) {
+    public AutoCheckerTask(Properties imapProperties, TextChannel receiveChannel) {
         log = MailCord.getInstance().getModuleLogger();
         this.imapProperties = imapProperties;
         this.receiveChannel = receiveChannel;

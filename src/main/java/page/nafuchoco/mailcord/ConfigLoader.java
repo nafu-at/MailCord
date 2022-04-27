@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 NAFU_at
+ * Copyright 2022 NAFU_at
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,24 +14,25 @@
  * limitations under the License.
  */
 
-package page.nafuchoco.mtd;
+package page.nafuchoco.mailcord;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
-import lombok.extern.slf4j.Slf4j;
+import page.nafuchoco.neojukepro.core.module.NeoModuleLogger;
 
 import java.io.*;
 import java.nio.file.Files;
 
-@Slf4j
 public class ConfigLoader {
     private static final ObjectMapper MAPPER = new ObjectMapper(new YAMLFactory());
 
+    private final NeoModuleLogger log;
     private final String filename;
     private final File configFile;
-    private MTDConfig config;
+    private MailCordConfig config;
 
     public ConfigLoader(String filename) {
+        log = MailCord.getInstance().getModuleLogger();
         this.filename = filename;
         configFile = new File(filename);
     }
@@ -49,7 +50,7 @@ public class ConfigLoader {
         }
 
         try (FileInputStream configInput = new FileInputStream(configFile)) {
-            config = MAPPER.readValue(configInput, MTDConfig.class);
+            config = MAPPER.readValue(configInput, MailCordConfig.class);
             log.info("The configuration file has been successfully loaded.");
         } catch (FileNotFoundException e) {
             log.error("The configuration file could not be found. Do not delete the configuration file after starting the program.\n" +
@@ -59,7 +60,7 @@ public class ConfigLoader {
         }
     }
 
-    public MTDConfig getConfig() {
+    public MailCordConfig getConfig() {
         return config;
     }
 }

@@ -1,0 +1,5 @@
+name: "MailCord"
+version: 1.0.0
+authors: [ NAFU_at ]
+website: "https://blog.chocotto.studio/"
+main: "page.nafuchoco.mailcord.MailCord"
