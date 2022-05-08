@@ -70,7 +70,6 @@ public class AutoCheckerTask extends TimerTask {
             for (Message message : messages) {
                 receiveChannel.sendMessageEmbeds(MailEmbedBuilder.buildMailEmbed(message)).queue();
                 message.setFlag(Flags.Flag.SEEN, true);
-                message.saveChanges();
             }
         } catch (NoSuchProviderException e1) {
             log.error("", e1);
