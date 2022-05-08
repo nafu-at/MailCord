@@ -47,7 +47,7 @@ public class MailCord extends NeoModule {
         log = getModuleLogger();
 
         // Load Configuration file.
-        ConfigLoader configLoader = new ConfigLoader("config.yml");
+        ConfigLoader configLoader = new ConfigLoader("config.yaml");
         configLoader.reloadConfig();
         config = configLoader.getConfig();
 

@@ -39,6 +39,7 @@ public class AutoCheckerTask extends TimerTask {
 
     @Override
     public void run() {
+        log.debug("Checking mail...");
         MailCord mailCord = MailCord.getInstance();
         MailCordConfig.ServerAuthConfig imapConfig = mailCord.getConfig().getAuthorization().getMailServer().getImapServer();
 

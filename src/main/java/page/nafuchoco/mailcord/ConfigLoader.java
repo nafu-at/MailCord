@@ -34,12 +34,12 @@ public class ConfigLoader {
     public ConfigLoader(String filename) {
         log = MailCord.getInstance().getModuleLogger();
         this.filename = filename;
-        configFile = new File(filename);
+        configFile = new File(MailCord.getInstance().getDataFolder(), filename);
     }
 
     public void reloadConfig() {
         if (!configFile.exists()) {
-            try (InputStream original = ClassLoader.getSystemResourceAsStream(filename)) {
+            try (InputStream original = MailCord.getInstance().getResources(filename)) {
                 Files.copy(original, configFile.toPath());
                 log.info("The configuration file was not found, so a new file was created.");
                 log.debug("Configuration file location: {}", configFile.getPath());
