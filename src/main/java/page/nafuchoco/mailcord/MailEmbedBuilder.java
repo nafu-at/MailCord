@@ -18,6 +18,7 @@ package page.nafuchoco.mailcord;
 
 import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
+import jakarta.mail.Multipart;
 import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -40,7 +41,7 @@ public class MailEmbedBuilder {
             builder.setTitle(message.getSubject());
             builder.addField("from", Arrays.toString(message.getFrom()), true);
             builder.addField("date", DATE_FORMAT.format(message.getSentDate()), true);
-            builder.setDescription(message.getContent().toString());
+            builder.setDescription(getTextFromMimeMultipart(message.getContent()));
             return builder.build();
         } catch (MessagingException e) {
             log.error("", e);
@@ -48,5 +49,12 @@ public class MailEmbedBuilder {
             log.error("", e);
         }
         return null;
+    }
+
+    private static String getTextFromMimeMultipart(Object content) throws MessagingException, IOException {
+        if (content instanceof Multipart) {
+            return getTextFromMimeMultipart(((Multipart) content).getBodyPart(0).getContent());
+        }
+        return content.toString();
     }
 }
