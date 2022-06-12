@@ -41,7 +41,11 @@ public class MailEmbedBuilder {
             builder.setTitle(message.getSubject());
             builder.addField("from", Arrays.toString(message.getFrom()), true);
             builder.addField("date", DATE_FORMAT.format(message.getSentDate()), true);
-            builder.setDescription(getTextFromMimeMultipart(message.getContent()));
+            var messageContent = getTextFromMimeMultipart(message.getContent());
+            if (messageContent.length() > 4000)
+                messageContent = messageContent.substring(0, 4000) + "[...]";
+            builder.setDescription(messageContent);
+
             return builder.build();
         } catch (MessagingException e) {
             log.error("", e);

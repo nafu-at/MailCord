@@ -19,7 +19,7 @@ package page.nafuchoco.mailcord;
 import jakarta.mail.*;
 import jakarta.mail.search.FlagTerm;
 import net.dv8tion.jda.api.entities.TextChannel;
-import page.nafuchoco.neojukepro.core.module.NeoModuleLogger;
+import page.nafuchoco.neobot.api.module.NeoModuleLogger;
 
 import java.util.Arrays;
 import java.util.Properties;

@@ -1,19 +1,22 @@
 # MailCord
 
-MailCord is a NeoJuekPro module that allows Bot to be used as an email client.
+MailCord is a NeoBotCore module that allows Bot to be used as an email client.
 
 ## Feature
+
 - [x] Notify the text channel of incoming mail
 - [ ] Send an email from a text channel
 
 **Specification Limitations**
 
-This module is designed for Bot administrators to manage emails to Bot email addresses and should not be used to monitor multiple email addresses for multiple guilds.  
-All settings such as credentials for the email address to be used and the ID of the text channel to be notified of incoming mail are in the configuration file.
+This module is designed for Bot administrators to manage emails to Bot email addresses and should not be used to monitor
+multiple email addresses for multiple guilds.  
+All settings such as credentials for the email address to be used and the ID of the text channel to be notified of
+incoming mail are in the configuration file.
 
 ## Operating Requirements
 
-- [x] NeoJukePro v2.0 ~ (Tested since v3.0)
+- [x] NeoBotCore v0.1.0 ~ **(Tested latest version)**
 - [x] Send Messages Permission
 
 ## License

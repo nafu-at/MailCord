@@ -16,12 +16,17 @@
 
 package page.nafuchoco.mailcord;
 
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.TextChannel;
-import page.nafuchoco.neojukepro.core.Main;
-import page.nafuchoco.neojukepro.core.guild.NeoGuild;
-import page.nafuchoco.neojukepro.core.module.NeoModule;
-import page.nafuchoco.neojukepro.core.module.NeoModuleLogger;
+import page.nafuchoco.neobot.api.ConfigLoader;
+import page.nafuchoco.neobot.api.NeoBot;
+import page.nafuchoco.neobot.api.module.NeoModule;
+import page.nafuchoco.neobot.api.module.NeoModuleLogger;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
 import java.util.Properties;
 import java.util.Timer;
 
@@ -31,7 +36,7 @@ public class MailCord extends NeoModule {
 
     public static MailCord getInstance() {
         if (instance == null)
-            instance = (MailCord) Main.getLauncher().getModuleManager().getModule("MailCord");
+            instance = (MailCord) NeoBot.getModuleManager().getModule("MailCord");
         return instance;
     }
 
@@ -47,14 +52,24 @@ public class MailCord extends NeoModule {
         log = getModuleLogger();
 
         // Load Configuration file.
-        ConfigLoader configLoader = new ConfigLoader("config.yaml");
-        configLoader.reloadConfig();
-        config = configLoader.getConfig();
+        var configFile = new File(getDataFolder(), "config.yaml");
+        if (!configFile.exists()) {
+            try (InputStream original = getResources("config.yaml")) {
+                Files.copy(original, configFile.toPath());
+                getModuleLogger().info("The configuration file was not found, so a new file was created.");
+                getModuleLogger().debug("Configuration file location: {}", configFile.getPath());
+            } catch (IOException e) {
+                getModuleLogger().error("The correct configuration file could not be retrieved from the executable.\n" +
+                        "If you have a series of problems, please contact the developer.", e);
+            }
+        }
+        config = ConfigLoader.loadConfig(configFile, MailCordConfig.class);
 
         // Load JDA Channel.
-        NeoGuild guild = getNeoJukePro().getGuildRegistry().getNeoGuild(config.getAuthorization().getDiscord().getGuildId());
-        TextChannel receiveChannel = guild.getJDAGuild().getTextChannelById(config.getAuthorization().getDiscord().getReceiveChannel());
-        TextChannel sendChannel = guild.getJDAGuild().getTextChannelById(config.getAuthorization().getDiscord().getSendChannel());
+
+        Guild guild = getInstance().getLauncher().getDiscordApi().getGuildById(config.getAuthorization().getDiscord().getGuildId());
+        TextChannel receiveChannel = guild.getTextChannelById(config.getAuthorization().getDiscord().getReceiveChannel());
+        TextChannel sendChannel = guild.getTextChannelById(config.getAuthorization().getDiscord().getSendChannel());
 
         // Setup IMAP Server
         MailCordConfig.ServerAuthConfig imapConfig = config.getAuthorization().getMailServer().getImapServer();

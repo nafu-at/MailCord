@@ -8,7 +8,6 @@ version '0.1.2-SNAPSHOT'
 
 repositories {
     mavenCentral()
-    maven { url 'https://m2.dv8tion.net/releases' }
     maven { url 'https://jitpack.io' }
 }
 
@@ -18,9 +17,7 @@ dependencies {
     testCompileOnly 'org.projectlombok:lombok:1.18.22'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
 
-    compileOnly('com.github.nafu-at:NeoJukePro:develop-SNAPSHOT') {
-        exclude module: 'lavaplayer'
-    }
+    compileOnly 'com.github.NeoBotDevelopment:NeoBotCore:6228197'
 
     implementation 'com.fasterxml.jackson.core:jackson-core:2.13.2'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.2.2'
