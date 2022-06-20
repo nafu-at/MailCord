@@ -17,7 +17,7 @@ dependencies {
     testCompileOnly 'org.projectlombok:lombok:1.18.22'
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.22'
 
-    compileOnly 'com.github.NeoBotDevelopment:NeoBotCore:6228197'
+    compileOnly 'com.github.NeoBotDevelopment:NeoBotApi:master-SNAPSHOT'
 
     implementation 'com.fasterxml.jackson.core:jackson-core:2.13.2'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.2.2'

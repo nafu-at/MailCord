@@ -16,7 +16,7 @@ incoming mail are in the configuration file.
 
 ## Operating Requirements
 
-- [x] NeoBotCore v0.1.0 ~ **(Tested latest version)**
+- [x] NeoBotCore v0.2.0 ~ **(Tested latest version)**
 - [x] Send Messages Permission
 
 ## License
