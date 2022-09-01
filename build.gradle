@@ -25,3 +25,12 @@ dependencies {
 
     implementation 'com.sun.mail:jakarta.mail:2.0.1'
 }
+
+processResources {
+    def props = [version: version]
+    inputs.properties props
+    filteringCharset 'UTF-8'
+    filesMatching('module.yaml') {
+        expand props
+    }
+}

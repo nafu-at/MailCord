@@ -1,5 +1,5 @@
 name: "MailCord"
-version: 1.0.0
+version: '${version}'
 authors: [ NAFU_at ]
 website: "https://blog.chocotto.studio/"
 main: "page.nafuchoco.mailcord.MailCord"
