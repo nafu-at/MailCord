@@ -16,8 +16,8 @@
 
 package page.nafuchoco.mailcord;
 
+import jakarta.mail.NoSuchProviderException;
 import net.dv8tion.jda.api.entities.Guild;
-import net.dv8tion.jda.api.entities.TextChannel;
 import page.nafuchoco.neobot.api.ConfigLoader;
 import page.nafuchoco.neobot.api.NeoBot;
 import page.nafuchoco.neobot.api.module.NeoModule;
@@ -27,6 +27,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.util.List;
 import java.util.Properties;
 import java.util.Timer;
 
@@ -66,34 +67,42 @@ public class MailCord extends NeoModule {
         config = ConfigLoader.loadConfig(configFile, MailCordConfig.class);
 
         // Load JDA Channel.
-
-        Guild guild = getInstance().getLauncher().getDiscordApi().getGuildById(config.getAuthorization().getDiscord().getGuildId());
-        TextChannel receiveChannel = guild.getTextChannelById(config.getAuthorization().getDiscord().getReceiveChannel());
-        TextChannel sendChannel = guild.getTextChannelById(config.getAuthorization().getDiscord().getSendChannel());
+        Guild guild = getInstance().getLauncher().getDiscordApi().getGuildById(config.getAuthorization().getDiscord().getGuildId()); // don't use...
 
         // Setup IMAP Server
-        MailCordConfig.ServerAuthConfig imapConfig = config.getAuthorization().getMailServer().getImapServer();
-        Properties imapProperties = new Properties();
-        switch (imapConfig.getSslProtocol()) {
-            case TLS:
-                imapProperties.setProperty("mail.imap.ssl.enable", String.valueOf(true));
-                imapProperties.setProperty("mail.imap.ssl.trust", imapConfig.getServerAddress());
-                break;
+        List<MailClient> clients = config.getAuthorization().getMailServer().stream()
+                .map(server -> {
+                    var address = server.getAddress();
+                    var imap = server.getImapServer();
+                    var smtp = server.getSmtpServer();
 
-            case STARTTLS:
-                imapProperties.setProperty("mail.imap.starttls.enable", String.valueOf(true));
-                imapProperties.setProperty("mail.imap.ssl.trust", imapConfig.getServerAddress());
-                break;
+                    Properties properties = new Properties();
+                    switch (imap.getSslProtocol()) {
+                        case TLS:
+                            properties.setProperty("mail.imap.ssl.enable", String.valueOf(true));
+                            properties.setProperty("mail.imap.ssl.trust", imap.getServerAddress());
+                            break;
 
-            case NONE:
-            default:
-                break;
+                        case STARTTLS:
+                            properties.setProperty("mail.imap.starttls.enable", String.valueOf(true));
+                            properties.setProperty("mail.imap.ssl.trust", imap.getServerAddress());
+                            break;
 
-        }
+                        case NONE:
+                        default:
+                            break;
+                    }
+
+                    try {
+                        return new MailClient(address, properties, imap, smtp, server.getImapServer().getChannel(), server.getSmtpServer().getChannel(), config.isDebugMode());
+                    } catch (NoSuchProviderException e) {
+                        throw new RuntimeException(e);
+                    }
+                }).toList();
 
         // Start AutoCheckerTask
         timer = new Timer(true);
-        autoCheckerTask = new AutoCheckerTask(imapProperties, receiveChannel);
+        autoCheckerTask = new AutoCheckerTask(clients);
         timer.scheduleAtFixedRate(autoCheckerTask, 0, 15 * 60 * 1000);
     }
 

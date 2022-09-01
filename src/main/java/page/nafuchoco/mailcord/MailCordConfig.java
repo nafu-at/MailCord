@@ -20,22 +20,31 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.util.List;
+
 @Getter
 @ToString
 public class MailCordConfig {
     @JsonProperty("authorization")
     private AuthorizationConfig authorization;
-    
+
     @JsonProperty("debugMode")
     private boolean debugMode;
 
     @Getter
     @ToString
     public static class AuthorizationConfig {
-        @JsonProperty("mailServer")
-        private MailServerConfig mailServer;
         @JsonProperty("discord")
         private DiscordConfig discord;
+        @JsonProperty("mailServer")
+        private List<MailServerConfig> mailServer;
+    }
+
+    @Getter
+    @ToString
+    public static class DiscordConfig {
+        @JsonProperty("guildId")
+        private long guildId;
     }
 
     @Getter
@@ -62,17 +71,8 @@ public class MailCordConfig {
         private String username;
         @JsonProperty("password")
         private String password;
-    }
-
-    @Getter
-    @ToString
-    public static class DiscordConfig {
-        @JsonProperty("guildId")
-        private long guildId;
-        @JsonProperty("receiveChannel")
-        private long receiveChannel;
-        @JsonProperty("sendChannel")
-        private long sendChannel;
+        @JsonProperty("channel")
+        private String channel;
     }
 
     public enum SSLProtocol {
