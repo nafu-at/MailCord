@@ -80,12 +80,12 @@ public class MailCord extends NeoModule {
                     switch (imap.getSslProtocol()) {
                         case TLS:
                             properties.setProperty("mail.imap.ssl.enable", String.valueOf(true));
-                            properties.setProperty("mail.imap.ssl.trust", imap.getServerAddress());
+                            properties.setProperty("mail.imaps.ssl.trust", imap.isBypassServerTrust() ? "*" : imap.getServerAddress());
                             break;
 
                         case STARTTLS:
                             properties.setProperty("mail.imap.starttls.enable", String.valueOf(true));
-                            properties.setProperty("mail.imap.ssl.trust", imap.getServerAddress());
+                            properties.setProperty("mail.imaps.ssl.trust", imap.isBypassServerTrust() ? "*" : imap.getServerAddress());
                             break;
 
                         case NONE:

@@ -19,12 +19,14 @@ package page.nafuchoco.mailcord;
 import jakarta.mail.NoSuchProviderException;
 import jakarta.mail.Session;
 import jakarta.mail.Store;
+import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
 import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.util.Properties;
 
 @Slf4j
+@ToString
 public class MailClient {
     private final String address;
     private final Session session;
@@ -63,6 +65,8 @@ public class MailClient {
         session.setDebug(debug);
 
         smtpStore = null; //Why? Because i don't implement SMTP.
+
+        log.debug(toString());
     }
 
     public String getAddress() {

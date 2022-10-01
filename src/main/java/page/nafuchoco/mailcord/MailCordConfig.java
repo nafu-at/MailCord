@@ -73,6 +73,8 @@ public class MailCordConfig {
         private String password;
         @JsonProperty("channel")
         private String channel;
+        @JsonProperty("bypassServerTrust")
+        private boolean bypassServerTrust;
     }
 
     public enum SSLProtocol {
