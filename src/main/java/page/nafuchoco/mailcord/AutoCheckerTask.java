@@ -37,7 +37,6 @@ public class AutoCheckerTask extends TimerTask {
     @Override
     public void run() {
         log.debug("Checking mail...");
-        MailCord mailCord = MailCord.getInstance();
 
         clients.forEach(client -> {
             try {
@@ -66,6 +65,10 @@ public class AutoCheckerTask extends TimerTask {
                     client.getReceiveChannel().sendMessageEmbeds(MailEmbedBuilder.buildMailEmbed(message)).queue();
                     message.setFlag(Flags.Flag.SEEN, true);
                 }
+
+                // Close the connection
+                inbox.close();
+                store.close();
             } catch (NoSuchProviderException e1) {
                 log.error("", e1);
             } catch (AuthenticationFailedException e2) {
